@@ -7,16 +7,16 @@
  */
 $url = getenv("TARGET_URL");
 $homepage = file_get_contents($url);
-
-if (file_exists('index.html')) {
-    $before_hash = hash_file('md5', 'index.html');
+$filename = dirname(__FILE__) . '/index.html';
+if (file_exists($filename)) {
+    $before_hash = hash_file('md5', $filename);
 
     if ($before_hash === md5($homepage)) {
         return;
     }
     send_to_slack();
 }
-file_put_contents('index.html', $homepage);
+file_put_contents($filename, $homepage);
 
 
 function send_to_slack() {
